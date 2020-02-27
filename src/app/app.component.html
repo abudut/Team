@@ -1,0 +1,155 @@
+<header class="display-flex">
+  <div class="content display-flex just-cont-spacbtw">
+    <aside class="nav display-flex just-cont-spacbtw">
+      <a href="#"> <i class="material-icons margin-r-i">
+          speed
+        </i>Dashboard</a>
+      <a href="#">
+        <i class="material-icons active-i margin-r-i">
+          desktop_mac
+        </i>Websites</a>
+
+      <a href="#"> <i class="material-icons margin-r-i">
+          edit
+        </i> Templates</a>
+
+      <a href="#"> <i class="material-icons margin-r-i">
+          help
+        </i> Help</a>
+    </aside>
+
+    <aside class="profile display-flex just-cont-spacbtw">
+
+      <a href="#"><img class="profile-img" src="assets\images\prof.png"></a>
+
+      <span>Sandra T.</span>
+
+      <a href="#"> <i class="material-icons">
+          arrow_drop_down
+        </i></a>
+
+    </aside>
+
+  </div>
+</header>
+
+<div class="main display-flex">
+
+  <div class="content">
+
+    <aside class="breadcrumb display-flex just-cont-spacbtw">
+
+      <a class="desact-a" href="#">Home</a> <i class="material-icons breadcrumb-i">
+        arrow_forward_ios
+      </i> <a class="desact-a" href="#">Websites</a> <i class="material-icons breadcrumb-i">
+        arrow_forward_ios
+      </i> <a href="#">New Team</a>
+
+    </aside>
+
+    <aside class="title display-flex">
+
+      <p><i class="material-icons i-title">
+          person_outline
+        </i></p>
+      <p class="title-p-main">New Team</p>
+
+    </aside>
+
+    <section>
+      <form [formGroup]="registerForm" (ngSubmit)="signup();">
+        <div class="display-flex just-cont-flxstrt">
+          <div class="regdiv">
+            <p><span>Nombre</span>
+              <input class="" type="text" name="nombre" placeholder="Tu nombre" formControlName="nombre"
+                [ngClass]="{ 'is-invalid': submitted && fval.nombre.errors }" required></p>
+            <div *ngIf="submitted && fval.nombre.errors" class="invalid-feedback">
+              <div class="required-text" *ngIf="fval.nombre.errors.required">
+                <p>El nombre es obligatorio y debe ser un nombre válido</p>
+              </div>
+            </div>
+            <p><span>Apellidos</span>
+              <input type="text" name="apellidos" formControlName="apellidos"
+                [ngClass]="{ 'is-invalid': submitted && fval.apellidos.errors }" required></p>
+            <div *ngIf="submitted && fval.apellidos.errors" class="invalid-feedback">
+              <div class="required-text" *ngIf="fval.apellidos.errors.required">
+                <p>El apellido es obligatorio</p>
+              </div>
+            </div>
+            <p><span>Email</span>
+              <input type="text" name="email" formControlName="email"
+                [ngClass]="{ 'is-invalid': submitted && fval.email.errors }" required></p>
+            <div *ngIf="submitted && fval.email.errors" class="invalid-feedback">
+              <div class="required-text" *ngIf="fval.email.errors.required">El Email es requerido</div>
+              <div class="required-text" *ngIf="fval.email.errors.email">
+                Introduzca una dirección de correo electrónico válida</div>
+            </div>
+          </div>
+          <div class="regdiv">
+            <p><span>Pais</span>
+              <select name="pais" formControlName="pais" [ngClass]="{ 'is-invalid': submitted && fval.pais.errors}"
+                required>
+                <option value="" selected disabled>Select Country</option>
+                <option value="España">España</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="Reino Unido">Reino Unido</option>
+
+              </select></p>
+            <div *ngIf="submitted && fval.pais.errors" class="invalid-feedback">
+              <div class="required-text" *ngIf="fval.pais.errors.required">
+                <p>Debes elegir un pais</p>
+              </div>
+            </div>
+            <p><span>Contraseña</span>
+              <input type="password" formControlName="password" name="pass"
+                [ngClass]="{ 'is-invalid': submitted && fval.password.errors}" required></p>
+            <div class="required-text" *ngIf="submitted && fval.password.errors" class="invalid-feedback">
+              <div class="required-text" ngClass="fval.password.errors.required">
+                <p>La Contraseña es requerida.</p>
+              </div>
+            </div>
+            <p><span>Repite la Contraseña</span>
+              <input type="password" formControlName="confirmPassword" name="rpass"
+                [ngClass]="{ 'is-invalid': submitted && fval.confirmPassword.errors }"
+                appConfirmEqualValidator='password' required></p>
+            <div *ngIf="submitted && fval.confirmPassword.errors" class="invalid-feedback">
+              <div class="required-text" *ngIf="fval.confirmPassword.errors.required">
+                <p>Confirmar la contraseña es
+                  requerida</p>
+              </div>
+              <div class="required-text" *ngIf="fval.confirmPassword.errors?.notEqual">Las contraseñas no coinciden
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="display-flex just-cont-spacbtw aside-form">
+          <h1>Members <mat-icon [matBadge]="badgeContent"></mat-icon>
+          </h1> <button class="add-button button display-flex"><i class="material-icons add-i i-button">
+              add</i>Add</button>
+        </aside>
+      </form>
+      <section class="users display-flex just-cont-spacbtw" *ngFor="let user of users">
+        <div class="nom">{{user.nombre}} {{user.apellidos}} <label *ngIf="user.Admin" class="admin-label">ADMIN</label>
+        </div>
+        <div>
+          <div class="text-pais display-flex"><img *ngIf="user.pais=='España'" src="/assets/images/es.png"><img *ngIf="user.pais=='Estados Unidos'" src="/assets/images/usa.png"><img *ngIf="user.pais=='Reino Unido'" src="/assets/images/uk.png"> {{user.pais}}</div>
+        </div>
+        <div class="remove-div display-flex">
+          <button class="button mkadmin-button display-flex" *ngIf="user.MakeAdmin"
+            (click)="user.MakeAdmin=false;user.Admin=true;makeAdmin()"><i class="material-icons mkadmin-i i-button">
+              person</i>Make Admin</button> <button class="remove-button button display-flex" (click)="removeUser()"><i
+              class="material-icons remove-i i-button">
+              remove_circle</i>Remove</button>
+        </div>
+      </section>
+
+    </section>
+
+    <section class="save-section display-flex "><button class="button save-button display-flex">Save</button></section>
+  </div>
+</div>
+<footer class="display-flex">
+  <div class="display-flex content content-footer">
+    <p class="p-footer"><a class="have-a" href="#">Have questions?</a> <a class="contact-a" href="#">Contact us</a></p>
+  </div>
+</footer>
